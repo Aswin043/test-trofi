@@ -190,18 +190,21 @@ export default function OrdersPage() {
       {/* Bottom Navigation */}
       <div style={{
         position: 'fixed',
-        bottom: 0,
-        left: 0,
-        right: 0,
-        width: '100%',
-        backgroundColor: 'white',
-        borderTop: '1px solid #e5e7eb',
-        padding: '1rem'
+        bottom: '1.5rem',
+        left: '50%',
+        transform: 'translateX(-50%)',
+        backgroundColor: 'rgba(255, 255, 255, 0.8)',
+        backdropFilter: 'blur(20px)',
+        borderRadius: '2rem',
+        border: '1px solid rgba(255, 255, 255, 0.3)',
+        padding: '1rem 2rem',
+        boxShadow: '0 10px 25px rgba(0, 0, 0, 0.1)'
       }}>
         <div style={{
           display: 'flex',
           justifyContent: 'space-around',
-          alignItems: 'center'
+          alignItems: 'center',
+          gap: '2rem'
         }}>
           <button 
             onClick={() => router.push('/orders')}
@@ -235,17 +238,20 @@ export default function OrdersPage() {
             <MapPin style={{ width: '1.5rem', height: '1.5rem', color: '#6b7280' }} />
           </button>
           
-          <button style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            gap: '0.25rem',
-            border: 'none',
-            padding: '0.5rem',
-            cursor: 'pointer'
-          }}>
-            <User style={{ width: '1.5rem', height: '1.5rem', color: '#6b7280' }} />
-          </button>
+                     <button
+             onClick={() => router.push('/profile')}
+             style={{
+               display: 'flex',
+               flexDirection: 'column',
+               alignItems: 'center',
+               gap: '0.25rem',
+               border: 'none',
+               padding: '0.5rem',
+               cursor: 'pointer'
+             }}
+           >
+             <User style={{ width: '1.5rem', height: '1.5rem', color: '#6b7280' }} />
+           </button>
         </div>
       </div>
 
