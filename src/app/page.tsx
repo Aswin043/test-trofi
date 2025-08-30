@@ -17,6 +17,8 @@ export default function Home() {
   const [userLocation, setUserLocation] = useState<google.maps.LatLngLiteral | null>(null);
   const [locationError, setLocationError] = useState<string | null>(null);
   const [mapLoaded, setMapLoaded] = useState(false);
+  const [cartItems, setCartItems] = useState<string[]>([]);
+  const [showCartPopup, setShowCartPopup] = useState(false);
 
   // Sample restaurant data with leftover food
   const generateRestaurantsNearLocation = (centerLat: number, centerLng: number) => {
@@ -106,6 +108,26 @@ export default function Home() {
       }
     ];
   };
+
+  // Add to cart function
+  const addToCart = (restaurantName: string) => {
+    console.log(`Added ${restaurantName} to cart!`);
+    setCartItems(prev => [...prev, restaurantName]);
+  };
+
+  // Remove item from cart function
+  const removeFromCart = (index: number) => {
+    setCartItems(prev => prev.filter((_, i) => i !== index));
+  };
+
+  // Make addToCart globally accessible for Google Maps info window
+  useEffect(() => {
+    (window as any).addToCart = addToCart;
+    
+    return () => {
+      delete (window as any).addToCart;
+    };
+  }, []);
 
   const [restaurants, setRestaurants] = useState<any[]>([]);
 
@@ -224,9 +246,9 @@ export default function Home() {
 
       // Create info window content
       const infoWindowContent = `
-        <div style="padding: 16px; max-width: 300px; font-family: Arial, sans-serif;">
+        <div style="padding: 8px 16px 16px 16px; max-width: 300px; font-family: Arial, sans-serif; text-align: center;">
           <h3 style="margin: 0 0 12px 0; color: #1f2937; font-size: 18px; font-weight: 600;">
-            🍕 ${restaurant.name}
+            ${restaurant.name}
           </h3>
           <div style="margin-bottom: 12px;">
             <p style="margin: 0 0 8px 0; color: #6b7280; font-size: 14px;">
@@ -244,13 +266,34 @@ export default function Home() {
               ${restaurant.discount}
             </p>
           </div>
-          <div style="margin-bottom: 0;">
+          <div style="margin-bottom: 16px;">
             <p style="margin: 0 0 8px 0; color: #6b7280; font-size: 14px;">
               <strong>Pickup Time:</strong>
             </p>
             <p style="margin: 0; color: #dc2626; font-size: 14px; font-weight: 500;">
-              ⏰ ${restaurant.pickupTime}
+              ${restaurant.pickupTime}
             </p>
+          </div>
+          <div style="text-align: center;">
+            <button 
+              onclick="addToCart('${restaurant.name}')"
+              style="
+                background-color: #059669;
+                color: white;
+                border: none;
+                padding: 10px 20px;
+                border-radius: 8px;
+                font-size: 14px;
+                font-weight: 600;
+                cursor: pointer;
+                transition: background-color 0.2s ease;
+                width: 100%;
+              "
+              onmouseover="this.style.backgroundColor='#047857'"
+              onmouseout="this.style.backgroundColor='#059669'"
+            >
+              Add to Cart
+            </button>
           </div>
         </div>
       `;
@@ -410,7 +453,153 @@ export default function Home() {
         className="w-full h-full"
       />
       
-                 {/* Bottom Dashboard Navigation */}
+                 {/* Cart Symbol - Bottom Left */}
+           {cartItems.length > 0 && (
+             <>
+               {/* Cart Popup */}
+               {showCartPopup && (
+                 <div style={{
+                   position: 'fixed',
+                   bottom: '5rem',
+                   left: '2rem',
+                   backgroundColor: 'white',
+                   borderRadius: '12px',
+                   padding: '1rem',
+                   boxShadow: '0 10px 25px rgba(0, 0, 0, 0.15)',
+                   border: '1px solid #e5e7eb',
+                   zIndex: 51,
+                   minWidth: '250px',
+                   maxWidth: '300px'
+                 }}>
+                   <div style={{
+                     display: 'flex',
+                     justifyContent: 'space-between',
+                     alignItems: 'center',
+                     marginBottom: '1rem',
+                     borderBottom: '1px solid #e5e7eb',
+                     paddingBottom: '0.5rem'
+                   }}>
+                     <h3 style={{ margin: 0, fontSize: '1rem', fontWeight: '600', color: '#1f2937' }}>
+                       Cart ({cartItems.length})
+                     </h3>
+                     <button
+                       onClick={() => setShowCartPopup(false)}
+                       style={{
+                         background: 'none',
+                         border: 'none',
+                         fontSize: '1.2rem',
+                         cursor: 'pointer',
+                         color: '#6b7280',
+                         padding: '0.25rem'
+                       }}
+                     >
+                       ✕
+                     </button>
+                   </div>
+                   
+                   <div style={{ maxHeight: '200px', overflowY: 'auto' }}>
+                     {cartItems.map((item, index) => (
+                       <div key={index} style={{
+                         display: 'flex',
+                         justifyContent: 'space-between',
+                         alignItems: 'center',
+                         padding: '0.5rem 0',
+                         borderBottom: '1px solid #f3f4f6'
+                       }}>
+                         <span style={{ fontSize: '0.9rem', color: '#374151' }}>
+                           {item}
+                         </span>
+                         <button
+                           onClick={() => removeFromCart(index)}
+                           style={{
+                             background: 'none',
+                             border: 'none',
+                             color: '#ef4444',
+                             cursor: 'pointer',
+                             fontSize: '0.8rem',
+                             padding: '0.25rem'
+                           }}
+                         >
+                           Remove
+                         </button>
+                       </div>
+                     ))}
+                   </div>
+                   
+                   <div style={{
+                     marginTop: '1rem',
+                     paddingTop: '0.5rem',
+                     borderTop: '1px solid #e5e7eb'
+                   }}>
+                     <button
+                       style={{
+                         width: '100%',
+                         backgroundColor: '#059669',
+                         color: 'white',
+                         border: 'none',
+                         padding: '0.75rem',
+                         borderRadius: '8px',
+                         fontSize: '0.9rem',
+                         fontWeight: '600',
+                         cursor: 'pointer'
+                       }}
+                     >
+                       Checkout
+                     </button>
+                   </div>
+                 </div>
+               )}
+               
+               {/* Cart Symbol */}
+               <div 
+                 onClick={() => setShowCartPopup(!showCartPopup)}
+                 style={{
+                   position: 'fixed',
+                   bottom: '1.5rem',
+                   left: '2rem',
+                   backgroundColor: '#ef4444',
+                   color: 'white',
+                   borderRadius: '50%',
+                   width: '3rem',
+                   height: '3rem',
+                   display: 'flex',
+                   alignItems: 'center',
+                   justifyContent: 'center',
+                   fontSize: '1.2rem',
+                   fontWeight: 'bold',
+                   zIndex: 50,
+                   boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)',
+                   border: '2px solid white',
+                   cursor: 'pointer',
+                   transition: 'transform 0.2s ease'
+                 }}
+                 onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.1)'}
+                 onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
+               >
+                 🛒
+                 <span style={{
+                   position: 'absolute',
+                   top: '-8px',
+                   right: '-8px',
+                   backgroundColor: '#fbbf24',
+                   color: 'black',
+                   borderRadius: '50%',
+                   width: '1.5rem',
+                   height: '1.5rem',
+                   display: 'flex',
+                   alignItems: 'center',
+                   justifyContent: 'center',
+                   fontSize: '0.8rem',
+                   fontWeight: 'bold',
+                   border: '2px solid white'
+                 }}>
+                   {cartItems.length}
+                 </span>
+               </div>
+             </>
+           )}
+
+           {/* Bottom Dashboard Navigation */}
            <div style={{
              position: 'fixed',
              bottom: '1.5rem',
