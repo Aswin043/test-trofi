@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import { ShoppingBag } from "lucide-react";
 
 declare global {
   interface Window {
@@ -619,7 +620,7 @@ export default function Home() {
                alignItems: 'center',
                gap: '2rem'
              }}>
-               {/* Shopping Cart Icon */}
+               {/* Orders Icon */}
                <button
                  onClick={() => router.push('/orders')}
                  style={{
@@ -627,18 +628,12 @@ export default function Home() {
                    flexDirection: 'column',
                    alignItems: 'center',
                    gap: '0.25rem',
-                   backgroundColor: '#f3f4f6',
                    border: 'none',
-                   borderRadius: '0.5rem',
                    padding: '0.5rem',
                    cursor: 'pointer'
                  }}
                >
-                 <svg style={{ width: '1.5rem', height: '1.5rem', color: 'black' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 11a2 2 0 100 4 2 2 0 000-4z" />
-                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a2 2 0 100 4 2 2 0 000-4z" />
-                 </svg>
+                 <ShoppingBag style={{ width: '1.5rem', height: '1.5rem', color: '#6b7280' }} />
                </button>
 
                {/* Map Pin Icon */}
@@ -647,11 +642,13 @@ export default function Home() {
                  flexDirection: 'column',
                  alignItems: 'center',
                  gap: '0.25rem',
+                 backgroundColor: '#f3f4f6',
                  border: 'none',
+                 borderRadius: '0.5rem',
                  padding: '0.5rem',
                  cursor: 'pointer'
                }}>
-                 <svg style={{ width: '1.5rem', height: '1.5rem', color: '#6b7280' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                 <svg style={{ width: '1.5rem', height: '1.5rem', color: 'black' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                  </svg>
