@@ -413,19 +413,22 @@ export default function Home() {
                  {/* Bottom Dashboard Navigation */}
            <div style={{
              position: 'fixed',
-             bottom: 0,
-             left: 0,
-             right: 0,
-             width: '100%',
-             backgroundColor: 'white',
-             borderTop: '1px solid #e5e7eb',
-             padding: '1rem',
-             zIndex: 50
+             bottom: '1.5rem',
+             left: '50%',
+             transform: 'translateX(-50%)',
+             backgroundColor: 'rgba(255, 255, 255, 0.8)',
+             backdropFilter: 'blur(20px)',
+             borderRadius: '2rem',
+             border: '1px solid rgba(255, 255, 255, 0.3)',
+             padding: '1rem 2rem',
+             zIndex: 50,
+             boxShadow: '0 10px 25px rgba(0, 0, 0, 0.1)'
            }}>
              <div style={{
                display: 'flex',
                justifyContent: 'space-around',
-               alignItems: 'center'
+               alignItems: 'center',
+               gap: '2rem'
              }}>
                {/* Shopping Cart Icon */}
                <button
@@ -466,15 +469,18 @@ export default function Home() {
                </button>
 
                {/* User Profile Icon */}
-               <button style={{
-                 display: 'flex',
-                 flexDirection: 'column',
-                 alignItems: 'center',
-                 gap: '0.25rem',
-                 border: 'none',
-                 padding: '0.5rem',
-                 cursor: 'pointer'
-               }}>
+               <button
+                 onClick={() => router.push('/profile')}
+                 style={{
+                   display: 'flex',
+                   flexDirection: 'column',
+                   alignItems: 'center',
+                   gap: '0.25rem',
+                   border: 'none',
+                   padding: '0.5rem',
+                   cursor: 'pointer'
+                 }}
+               >
                  <svg style={{ width: '1.5rem', height: '1.5rem', color: '#6b7280' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                  </svg>
