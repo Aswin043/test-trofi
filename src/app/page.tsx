@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 
 declare global {
   interface Window {
@@ -10,6 +11,7 @@ declare global {
 }
 
 export default function Home() {
+  const router = useRouter();
   const mapContainer = useRef<HTMLDivElement>(null);
   const map = useRef<google.maps.Map | null>(null);
   const [userLocation, setUserLocation] = useState<google.maps.LatLngLiteral | null>(null);
@@ -408,44 +410,77 @@ export default function Home() {
         className="w-full h-full"
       />
       
-      {/* Bottom Dashboard Navigation */}
-      <div className="absolute bottom-6 left-10 right-10 z-50">
-        <div className="mx-4 mb-4">
-                     <div className="bg-white/70 backdrop-blur-lg rounded-2xl shadow-lg border border-white/20">
-                         <div className="flex items-center justify-around py-10 px-15">
-              {/* Shopping Cart Icon */}
-              <button className="flex items-center justify-center p-3 rounded-xl hover:bg-gray-100/50 transition-colors">
-                <svg className="w-8 h-8 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 11a2 2 0 100 4 2 2 0 000-4z" />
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a2 2 0 100 4 2 2 0 000-4z" />
-                </svg>
-              </button>
+                 {/* Bottom Dashboard Navigation */}
+           <div style={{
+             position: 'fixed',
+             bottom: 0,
+             left: 0,
+             right: 0,
+             width: '100%',
+             backgroundColor: 'white',
+             borderTop: '1px solid #e5e7eb',
+             padding: '1rem',
+             zIndex: 50
+           }}>
+             <div style={{
+               display: 'flex',
+               justifyContent: 'space-around',
+               alignItems: 'center'
+             }}>
+               {/* Shopping Cart Icon */}
+               <button
+                 onClick={() => router.push('/orders')}
+                 style={{
+                   display: 'flex',
+                   flexDirection: 'column',
+                   alignItems: 'center',
+                   gap: '0.25rem',
+                   backgroundColor: '#f3f4f6',
+                   border: 'none',
+                   borderRadius: '0.5rem',
+                   padding: '0.5rem',
+                   cursor: 'pointer'
+                 }}
+               >
+                 <svg style={{ width: '1.5rem', height: '1.5rem', color: 'black' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 11a2 2 0 100 4 2 2 0 000-4z" />
+                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a2 2 0 100 4 2 2 0 000-4z" />
+                 </svg>
+               </button>
 
-              {/* Map Pin Icon */}
-              <button className="flex items-center justify-center p-3 rounded-xl hover:bg-gray-100/50 transition-colors">
-                <svg className="w-8 h-8 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>
-              </button>
+               {/* Map Pin Icon */}
+               <button style={{
+                 display: 'flex',
+                 flexDirection: 'column',
+                 alignItems: 'center',
+                 gap: '0.25rem',
+                 border: 'none',
+                 padding: '0.5rem',
+                 cursor: 'pointer'
+               }}>
+                 <svg style={{ width: '1.5rem', height: '1.5rem', color: '#6b7280' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                 </svg>
+               </button>
 
-              {/* User Profile Icon */}
-              <button className="flex items-center justify-center p-3 rounded-xl hover:bg-gray-100/50 transition-colors">
-                <div className="relative">
-                  <svg className="w-8 h-8 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                  </svg>
-                  <svg className="w-4 h-4 text-gray-600 absolute -top-1 -right-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                  </svg>
-                </div>
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
+               {/* User Profile Icon */}
+               <button style={{
+                 display: 'flex',
+                 flexDirection: 'column',
+                 alignItems: 'center',
+                 gap: '0.25rem',
+                 border: 'none',
+                 padding: '0.5rem',
+                 cursor: 'pointer'
+               }}>
+                 <svg style={{ width: '1.5rem', height: '1.5rem', color: '#6b7280' }} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                 </svg>
+               </button>
+             </div>
+           </div>
     </div>
   );
 }
